@@ -1,3 +1,4 @@
-/exports/registry *(rw,root_squash)
-/exports/metrics *(rw,root_squash)
-/exports/logging *(rw,root_squash)
+/srv/exports/registry *(rw,root_squash)
+/srv/exports/metrics *(rw,root_squash)
+/srv/exports/logging *(rw,root_squash)
+/srv/exports/pv *(rw,root_squash)

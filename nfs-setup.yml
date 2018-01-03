@@ -3,14 +3,35 @@
   hosts:  nfs
   tasks:
     - name:  Ensure export directories exist
-      path:  "{{ item }} "
-      state:  directory
+      file:
+        path:  "{{ item }}"
+        state:  directory
       with_items:
-        - /exports/registry
-        - /exports/metrics
-        - /exports/logging
+        - /srv/exports/registry
+        - /srv/exports/metrics
+        - /srv/exports/logging
+        - /srv/exports/pv
 
     - name:  Ensure NFS is installed
-    - name:  Ensure NFS is enabled through the firewall
-    - name:  Ensure NFS is enabled and started
+      yum:
+        name:  nfs-utils
+        state:  latest
 
+    - name:  Ensure NFS is enabled and started
+      service:
+        name:  nfs
+        enabled:  true
+        state:  started
+
+    - name: Ensure export entries are in /etc/exports
+      blockinfile:
+        path: /etc/exports
+        block: |
+          /srv/exports/registry *(rw,root_squash)
+          /srv/exports/metrics *(rw,root_squash)
+          /srv/exports/logging *(rw,root_squash)
+          /srv/exports/pv *(rw,root_squash)
+        marker: "# {mark} ANSIBLE MANAGED BLOCK for OpenShift"
+
+    - name:  Re-export all NFS exports
+      shell:  exportfs -r
