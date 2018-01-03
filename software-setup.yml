@@ -19,6 +19,14 @@
       - sos
       - psacct
 
+  - name:  Ensure all software is updated
+    yum:
+      name:  "*"
+      state:  latest
+    notify:
+      - reboot_system
+      - hangout
+
   - name:  Ensure software for rpm-based installation is installed
     yum:
       name:  atomic-openshift-utils
@@ -34,3 +42,20 @@
       name:  docker
       enabled:  true
       state:  started
+
+  handlers:
+    - name:  reboot_system
+      command:  "systemctl reboot"
+      async:  1
+      poll:  0
+      ignore_errors:  true
+
+    - name:  hangout
+      become:  False
+      wait_for:
+        host:  "{{ inventory_hostname }}"
+        state:  started
+#        port:  22
+        delay:  60
+        timeout:  120
+      delegate_to:  localhost
