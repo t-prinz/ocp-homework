@@ -1,0 +1,44 @@
+#
+# On bastion as root user
+#
+# This installs the OCP Ansible installer and, if needed, Ansible
+#
+
+yum install -y atomic-openshift-utils
+
+#
+# Install the screen utility if desired
+#
+
+yum install -y screen
+
+#
+# Save the original Ansible hosts file for reference
+#
+
+cp /etc/ansible/hosts /etc/ansible/hosts.orig
+
+#
+# On bastion as root user
+#
+# Run the setup.sh script to install the root ssh public key
+#
+
+./setup.sh
+
+#
+# Configure RHSM
+#
+
+subscription-manager register
+subscription-manager list --available --matches '*OpenShift*'
+subscription-manager attach --pool=8a85f98c608ccb070160913e1c1a1cab
+subscription-manager repos --disable="*"
+yum-config-manager --disable \*
+subscription-manager repos \
+    --enable="rhel-7-server-rpms" \
+    --enable="rhel-7-server-extras-rpms" \
+    --enable="rhel-7-server-ose-3.7-rpms" \
+    --enable="rhel-7-fast-datapath-rpms"
+
+#openshift_clock_enabled=true
