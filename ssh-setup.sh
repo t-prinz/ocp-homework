@@ -1,5 +1,6 @@
 #!/bin/bash
 #
+# From the bastion host as root
 # Copy ssh key to hosts for Ansible access
 #
 
