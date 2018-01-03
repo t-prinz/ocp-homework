@@ -1,4 +1,9 @@
 #
+# The various scripts, Ansible playbooks, and other supporting files are stored in git:
+# https://github.com/t-prinz/ocp-homework
+#
+
+#
 # On bastion as root user
 #
 # This installs the OCP Ansible installer and, if needed, Ansible
