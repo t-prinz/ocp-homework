@@ -1,0 +1,3 @@
+/exports/registry *(rw,root_squash)
+/exports/metrics *(rw,root_squash)
+/exports/logging *(rw,root_squash)

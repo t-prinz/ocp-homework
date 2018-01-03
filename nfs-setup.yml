@@ -1,0 +1,16 @@
+---
+- name:  Prepare NFS server
+  hosts:  nfs
+  tasks:
+    - name:  Ensure export directories exist
+      path:  "{{ item }} "
+      state:  directory
+      with_items:
+        - /exports/registry
+        - /exports/metrics
+        - /exports/logging
+
+    - name:  Ensure NFS is installed
+    - name:  Ensure NFS is enabled through the firewall
+    - name:  Ensure NFS is enabled and started
+
