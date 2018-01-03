@@ -22,12 +22,13 @@ cp /etc/ansible/hosts /etc/ansible/hosts.orig
 # On bastion as root user
 #
 # Run the setup.sh script to install the root ssh public key
+# This will allow Ansible to access all of the nodes
 #
 
-./setup.sh
+./ssh-setup.sh
 
 #
-# Configure RHSM
+# Configure RHSM if needed
 #
 
 subscription-manager register
@@ -41,4 +42,28 @@ subscription-manager repos \
     --enable="rhel-7-server-ose-3.7-rpms" \
     --enable="rhel-7-fast-datapath-rpms"
 
+#
+# Run the Ansible playbook that installs the OpenShift software on all of the nodes
+#
+
+ansible-playbook software-setup.yml
+
+#
+# Run the Ansible playbook that sets up the bastion host as a NFS server
+# This also creates an export for a directory to hold persistent volumes
+#
+
+ansible-playbook nfs-setup.yml
+
+#
+# Run the Ansible playbook that sets up htpasswd authentication for 3 users
+# This file will get copied to the OpenShift nodes during installation
+#
+
+ansible-playbook authentication-setup.yml
+
 #openshift_clock_enabled=true
+
+# Run the installer
+
+ansible-playbook /usr/share/ansible/openshift-ansible/playbooks/byo/config.yml
