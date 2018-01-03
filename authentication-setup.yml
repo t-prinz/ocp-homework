@@ -1,0 +1,16 @@
+---
+- name:  Configure htpasswd authentication
+  hosts:  localhost
+  vars_files:
+    - secret/creds.yml
+  tasks:
+    - name:  Ensure htpasswd file is created with proper entry
+      lineinfile:
+        create:  yes
+        line:  "{{item}}:{{password}}"
+        path:  /root/htpasswd.openshift
+        state:  present
+      with_items:
+        - wolfgang
+        - wiley
+        - lou
