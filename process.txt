@@ -4,6 +4,15 @@
 #
 
 #
+# Metrics, logging, and etcd all create directories in /exports on the server, regardless
+# of what is specified in the configuration file
+#
+# Registry abides by what is specified in the configuration file
+#
+# The OpenShift installer will create an exports file:  /etc/exports.d/openshift-ansible.exports
+#
+
+#
 # On bastion as root user
 #
 # This installs the OCP Ansible installer and, if needed, Ansible

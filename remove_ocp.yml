@@ -1,0 +1,32 @@
+---
+- name:  OpenShift cleanup play
+  hosts:  nodes
+  tasks:
+    - name:  Ensure /etc/origin directory is not present
+      file:
+        path:  /etc/origin
+        state:  absent
+
+- name:  NFS server restart
+  hosts:  nfs
+  tasks:
+#    - name: Ensure export entry is not in /etc/exports
+#      blockinfile:
+#        path: /etc/exports
+#        state:  absent
+#        block: |
+#          /srv/exports *(rw,root_squash)
+#        marker: "# {mark} ANSIBLE MANAGED BLOCK for OpenShift"
+
+    - name:  Ensure /exports directory is empty
+      shell:  "rm -rf /exports/*"
+
+    - name:  Ensure OpenShift-created export file is not present
+      file:
+        path:  /etc/exports.d/openshift-ansible.exports
+        state:  absent
+
+    - name:  Ensure NFS service is restarted
+      service:
+        name:  nfs
+        state:  restarted
