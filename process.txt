@@ -35,7 +35,7 @@ cp /etc/ansible/hosts /etc/ansible/hosts.orig
 #
 # On bastion as root user
 #
-# Run the setup.sh script to install the root ssh public key
+# Run the ssh-setup.sh script to install the root ssh public key
 # This will allow Ansible to access all of the nodes
 #
 
