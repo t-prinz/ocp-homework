@@ -15,8 +15,8 @@ timeout=60
 openshift_deployment_type=openshift-enterprise
 openshift_master_cluster_method=native
 openshift_master_cluster_hostname=loadbalancer1.example.com
-openshift_master_cluster_public_hostname=loadbalancer1-052a.oslab.opentlc.com
-openshift_master_default_subdomain=apps.052a.oslab.opentlc.com
+openshift_master_cluster_public_hostname=loadbalancer1-ad96.oslab.opentlc.com
+openshift_master_default_subdomain=apps.loadbalancer1-ad96.oslab.opentlc.com
 containerized=false
 
 #os_sdn_network_plugin_name='redhat/openshift-ovs-multitenant'
