@@ -1,0 +1,40 @@
+---
+- name:  Make sure the Open TLC repo file is moved and subscribe the system
+  hosts:  nodes nfs
+  vars:
+    opentlc_repo:  /etc/yum.repos.d/open.repo
+    rhsm_pool_ids:  8a85f9843affb61f013b52c3e53e53a5
+  vars_prompt:
+    - name:  "rhsm_uname"
+      prompt:  "RHSM Username"
+      private:  no
+    - name:  "rhsm_password"
+      prompt:  "RHSM Password"
+      private:  yes
+  tasks:
+    - name:  Check for existence of file
+      stat:
+        path:  "{{ opentlc_repo }}"
+      register:  exist_check
+
+    - name:  Move the file if needed
+      command:  mv {{ opentlc_repo }} {{ opentlc_repo }}.BEFORE-OCP-INSTALL
+      when:  exist_check.stat.exists
+
+    - name:  Subscribe system and enable appropriate pool
+      redhat_subscription:
+        force_register:  True
+        password:  "{{ rhsm_password  }}"
+        pool_ids:  "{{ rhsm_pool_ids }}"
+        state:  present
+        username:  "{{ rhsm_uname }}"
+      register:  rhsm_check
+
+    - name:  Enable appropriate repos
+      block:
+        - name:  Disable all repos initially
+          command:  subscription-manager repos --disable="*"
+
+        - name:  Enable OpenShift repos
+          command:  subscription-manager repos --enable=rhel-7-server-extras-rpms --enable=rhel-7-server-ose-3.7-rpms --enable=rhel-7-server-rpms --enable=rhel-7-fast-datapath-rpms
+      when:  not rhsm_check.failed

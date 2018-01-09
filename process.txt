@@ -15,6 +15,11 @@
 #
 # On bastion as root user
 #
+
+git clone https://github.com/t-prinz/ocp-homework.git
+cd ocp-homework
+
+#
 # This installs the OCP Ansible installer and, if needed, Ansible
 #
 
@@ -27,10 +32,11 @@ yum install -y atomic-openshift-utils
 yum install -y screen
 
 #
-# Save the original Ansible hosts file for reference
+# Save the original Ansible hosts file for reference and copy over the customized hosts file
 #
 
 cp /etc/ansible/hosts /etc/ansible/hosts.orig
+cp hosts /etc/ansible/hosts
 
 #
 # On bastion as root user
@@ -42,19 +48,11 @@ cp /etc/ansible/hosts /etc/ansible/hosts.orig
 ./ssh-setup.sh
 
 #
-# Configure RHSM if needed
+# Configure RHSM
+# This will prompt for your RHSM username and password and move the Open TLC repo file out of the way
 #
 
-subscription-manager register
-subscription-manager list --available --matches '*OpenShift*'
-subscription-manager attach --pool=8a85f98c608ccb070160913e1c1a1cab
-subscription-manager repos --disable="*"
-yum-config-manager --disable \*
-subscription-manager repos \
-    --enable="rhel-7-server-rpms" \
-    --enable="rhel-7-server-extras-rpms" \
-    --enable="rhel-7-server-ose-3.7-rpms" \
-    --enable="rhel-7-fast-datapath-rpms"
+ansible-playbook rhsm-setup.yml
 
 #
 # Run the Ansible playbook that installs the OpenShift software on all of the nodes
