@@ -1,6 +1,7 @@
 ---
 - name:  Make sure the Open TLC repo file is moved and subscribe the system
-  hosts:  nodes nfs
+#  hosts:  nodes nfs
+  hosts:  all
   vars:
     opentlc_repo:  /etc/yum.repos.d/open.repo
     rhsm_pool_ids:  8a85f9843affb61f013b52c3e53e53a5
@@ -26,6 +27,8 @@
         force_register:  True
         password:  "{{ rhsm_password  }}"
         pool_ids:  "{{ rhsm_pool_ids }}"
+        rhsm_baseurl:  "https://cdn.redhat.com"
+        server_hostname:  "subscription.rhsm.redhat.com:443/subscription"
         state:  present
         username:  "{{ rhsm_uname }}"
       register:  rhsm_check
@@ -37,4 +40,7 @@
 
         - name:  Enable OpenShift repos
           command:  subscription-manager repos --enable=rhel-7-server-extras-rpms --enable=rhel-7-server-ose-3.7-rpms --enable=rhel-7-server-rpms --enable=rhel-7-fast-datapath-rpms
+
+        - name:  Configure CA cert
+          command:  subscription-manager config --rhsm.repo_ca_cert=/etc/rhsm/ca/redhat-uep.pem
       when:  not rhsm_check.failed

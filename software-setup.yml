@@ -3,7 +3,7 @@
 #  hosts:  nodes lb
   hosts:  nodes
   tasks:
-  - name:  Ensure primary OpenShift software is installed
+  - name:  Ensure OpenShift software is installed
     yum:
       name: "{{ item }}"
       state:  latest

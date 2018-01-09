@@ -72,10 +72,9 @@ ansible-playbook nfs-setup.yml
 # This file will get copied to the OpenShift nodes during installation
 #
 
-ansible-playbook authentication-setup.yml
-
-#openshift_clock_enabled=true
+ansible-playbook --ask-vault authentication-setup.yml
 
 # Run the installer
+#openshift_clock_enabled=true
 
 ansible-playbook /usr/share/ansible/openshift-ansible/playbooks/byo/config.yml
