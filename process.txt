@@ -75,6 +75,19 @@ ansible-playbook nfs-setup.yml
 ansible-playbook --ask-vault authentication-setup.yml
 
 # Run the installer
-#openshift_clock_enabled=true
 
 ansible-playbook /usr/share/ansible/openshift-ansible/playbooks/byo/config.yml
+
+#
+# For reference, the Ansible hosts file is located at
+#
+# /usr/share/doc/openshift-ansible-docs-3.7.9/docs/example-inventories/hosts.example
+#openshift_clock_enabled=true
+#
+
+#
+# To remove OpenShift
+#
+
+ansible-playbook /usr/share/ansible/openshift-ansible/playbooks/adhoc/uninstall.yml
+ansible-playbook remove_ocp.yml
