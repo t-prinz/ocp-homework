@@ -83,7 +83,11 @@ ansible-playbook nfs-setup.yml
 ansible-playbook --ask-vault authentication-setup.yml
 
 # Run the installer
+# If you use screen, here are some hints:
+#   ctrl a-d: detaches from session
+#   screen -r:  attaches to session
 
+screen
 ansible-playbook /usr/share/ansible/openshift-ansible/playbooks/byo/config.yml
 
 #
