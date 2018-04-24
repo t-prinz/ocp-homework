@@ -32,10 +32,17 @@ yum install -y atomic-openshift-utils
 yum install -y screen
 
 #
-# Save the original Ansible hosts file for reference and copy over the customized hosts file
+# Save the original Ansible hosts file for reference
 #
 
 cp /etc/ansible/hosts /etc/ansible/hosts.orig
+
+#
+# Edit the hosts file to reflect your GUID and then copy it over
+# openshift_master_cluster_public_hostname=loadbalancer1-GUID.oslab.opentlc.com
+# openshift_master_default_subdomain=cloudapps-GUID.oslab.opentlc.com
+#
+
 cp hosts /etc/ansible/hosts
 
 #
@@ -43,12 +50,13 @@ cp hosts /etc/ansible/hosts
 #
 # Run the ssh-setup.sh script to install the root ssh public key
 # This will allow Ansible to access all of the nodes
+# Note that they key may have already been copied
 #
 
 ./ssh-setup.sh
 
 #
-# Configure RHSM
+# Configure RHSM if you want to register to a different repository than the Open TLC repo
 # This will prompt for your RHSM username and password and move the Open TLC repo file out of the way
 #
 
